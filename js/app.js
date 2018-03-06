@@ -1,14 +1,28 @@
-/*
- * Create a list that holds all of your cards
- */
+// Start the game click the button "Start!"
+var btn = document.querySelector('#start');
+btn.addEventListener('click', startGame);
 
+// Display the cards on the page
+function startGame() {
+  // Create a list that holds all of your cards
+  const cards = document.querySelectorAll(".card");
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+  // shuffle the list of cards using the provided "shuffle" method below
+  const newCards = shuffle(Array.from(cards));
+
+  // remove cards from deck
+  cards.forEach(function(card){
+    card.parentElement.removeChild(card);
+  });
+
+  const deck = document.querySelector(".deck");
+
+  // loop through each card and create its HTML
+  // add each card's HTML to the page
+  newCards.forEach(function(card){
+    deck.innerHTML = deck.innerHTML + card.outerHTML;
+  });
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -36,3 +50,12 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+ // Reset the Game
+ var btn_restart = document.querySelector('.restart');
+ btn_restart.addEventListener('click', restartGame);
+
+function restartGame(){
+  startGame();
+}
