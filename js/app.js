@@ -57,7 +57,25 @@ let numberMatches = 0
 let deck = document.querySelector('.deck');
 deck.addEventListener('click', cardSelection);
 
-function isMatch(){
+
+let timer = document.querySelector(".timer");
+let totalSeconds = 0;
+setInterval(setTime, 1000);
+
+function setTime() {
+  ++totalSeconds;
+  timer.innerHTML = pad(parseInt(totalSeconds/60)) + ":" + pad(totalSeconds%60)
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    valString = "0" + valString;
+  }
+  return valString;
+}
+
+function isMatch() {
   // check if there are two cards
   if(openCards.length === 2){
     // if the cards match
@@ -65,15 +83,17 @@ function isMatch(){
       //lock the cards in the open position
       const matchCards = document.getElementsByClassName(openCards[0]);
       Array.from(matchCards).forEach(function(card){
-        card.parentElement.classList.toggle("show");
-        card.parentElement.classList.toggle("open");
+        card.parentElement.classList.remove("show");
+        card.parentElement.classList.remove("open");
         card.parentElement.classList.add("match");
       });
       numberMatches = numberMatches + 1;
+      if(numberMatches === 8){
+        // endGame();
+      }
     }else{ // cards do not match
-      setTimeout(noMatch, 1000, openCards[0], openCards[1]);
+      setTimeout(noMatch, 900, openCards[0], openCards[1]);
     }
-
     // increment the move counter and display it on the page
     counter = counter + 1;
     const numberMoves = document.querySelector(".moves");
@@ -98,17 +118,22 @@ function noMatch(openCard1, openCard2){
 function cardSelection(evt){
   let target = evt.target;
   // Add classes "show" and "open" to a selected card
-  if(target.nodeName === "LI"){
-    target.classList.toggle("show");
-    target.classList.toggle("open");
+  if(target.nodeName === "LI" & !target.classList.contains("show")){
+    target.classList.add("show");
+    target.classList.add("open");
     openCards.push(target.firstElementChild.classList[1]);
-  }else if(target.nodeName === "I"){
-    target.parentElement.classList.toggle("show");
-    target.parentElement.classList.toggle("open");
+  }else if(target.nodeName === "I" & !target.parentElement.classList.contains("show")){
+    target.parentElement.classList.add("show");
+    target.parentElement.classList.add("open");
     openCards.push(target.classList[1]);
   }
-
   isMatch();
+}
+
+// End the game
+function endGame(){
+  let deck = document.querySelector('.deck');
+  deck.removeEventListener('click', cardSelection);
 }
 
 // Reset the Game

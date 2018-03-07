@@ -86,9 +86,13 @@ h1 {
  */
 
 .score-panel {
-    text-align: left;
-    width: 345px;
+    text-align: center;
+    width: 500px;
     margin-bottom: 10px;
+}
+
+.score-panel .timer {
+    float: left;
 }
 
 .score-panel .stars {
