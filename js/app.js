@@ -1,5 +1,5 @@
-// Start the game click the button "Start!"
-// const btn = document.querySelector('#start');
+const deck = document.querySelector(".deck");
+
 document.addEventListener('DOMContentLoaded', startGame);
 
 // Display the cards on the page
@@ -15,13 +15,14 @@ function startGame() {
     card.parentElement.removeChild(card);
   });
 
-  const deck = document.querySelector(".deck");
-
   // loop through each card and create its HTML
   // add each card's HTML to the page
   newCards.forEach(function(card){
     deck.innerHTML = deck.innerHTML + card.outerHTML;
   });
+
+  moves = 0;
+  totalSeconds = 0;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -40,40 +41,33 @@ function shuffle(array) {
 }
 
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
 let openCards = [];
-let counter = 0;
+
 let numberMatches = 0
-let deck = document.querySelector('.deck');
+// let deck = document.querySelector('.deck');
 deck.addEventListener('click', cardSelection);
 
 
-let timer = document.querySelector(".timer");
+// TIMER
 let totalSeconds = 0;
-setInterval(setTime, 1000);
+let timer = document.querySelector(".timer");
+let countTime;
 
-function setTime() {
-  ++totalSeconds;
-  timer.innerHTML = pad(parseInt(totalSeconds/60)) + ":" + pad(totalSeconds%60)
-}
+function timeRun(){
+  countTime = setInterval(function(){
+    ++totalSeconds;
+    timer.innerHTML = pad(parseInt(totalSeconds/60)) + ":" + pad(totalSeconds%60);
+  }, 1000);
 
-function pad(val) {
-  var valString = val + "";
-  if (valString.length < 2) {
-    valString = "0" + valString;
+  function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+      valString = "0" + valString;
+    }
+    return valString;
   }
-  return valString;
 }
+
 
 function isMatch() {
   // check if there are two cards
@@ -89,15 +83,19 @@ function isMatch() {
       });
       numberMatches = numberMatches + 1;
       if(numberMatches === 8){
-        // endGame();
+        endGame();
       }
     }else{ // cards do not match
       setTimeout(noMatch, 900, openCards[0], openCards[1]);
     }
     // increment the move counter and display it on the page
-    counter = counter + 1;
+    moves = moves + 1;
+    if(moves == 1) {
+      totalSeconds = 0;
+      timeRun();
+    }
     const numberMoves = document.querySelector(".moves");
-    numberMoves.textContent = counter;
+    numberMoves.textContent = moves;
     openCards = [];
   }
 }
@@ -132,8 +130,8 @@ function cardSelection(evt){
 
 // End the game
 function endGame(){
-  let deck = document.querySelector('.deck');
-  deck.removeEventListener('click', cardSelection);
+  // deck.removeEventListener('click', cardSelection);
+  clearInterval(countTime);
 }
 
 // Reset the Game
