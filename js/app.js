@@ -1,5 +1,21 @@
+
+// open cards from click action
+let openCards = [];
+
+// number of matches
+let numberMatches = 0
+
+// add event listener at "deck" class
 const deck = document.querySelector(".deck");
 
+// when one clicks on one card
+deck.addEventListener('click', cardSelection);
+
+// modal box pop up
+const modal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-button");
+
+// one can play when the page is completely loaded
 document.addEventListener('DOMContentLoaded', startGame);
 
 // Display the cards on the page
@@ -21,8 +37,11 @@ function startGame() {
     deck.innerHTML = deck.innerHTML + card.outerHTML;
   });
 
+  // reset
   moves = 0;
   totalSeconds = 0;
+  numberMatches = 0;
+  openCards = [];
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -40,17 +59,9 @@ function shuffle(array) {
     return array;
 }
 
-
-let openCards = [];
-
-let numberMatches = 0
-// let deck = document.querySelector('.deck');
-deck.addEventListener('click', cardSelection);
-
-
-// TIMER
+// Timer
 let totalSeconds = 0;
-let timer = document.querySelector(".timer");
+const timer = document.querySelector(".timer");
 let countTime;
 
 function timeRun(){
@@ -82,12 +93,10 @@ function isMatch() {
         card.parentElement.classList.add("match");
       });
       numberMatches = numberMatches + 1;
-      if(numberMatches === 8){
-        endGame();
-      }
     }else{ // cards do not match
       setTimeout(noMatch, 900, openCards[0], openCards[1]);
     }
+
     // increment the move counter and display it on the page
     moves = moves + 1;
     if(moves == 1) {
@@ -96,7 +105,14 @@ function isMatch() {
     }
     const numberMoves = document.querySelector(".moves");
     numberMoves.textContent = moves;
+
+    //clean the openCards array
     openCards = [];
+
+    // Check if all cards are matched
+    if(numberMatches === 8){
+      return endGame();
+    }
   }
 }
 
@@ -130,8 +146,17 @@ function cardSelection(evt){
 
 // End the game
 function endGame(){
-  // deck.removeEventListener('click', cardSelection);
   clearInterval(countTime);
+  modal.classList.add("show-modal");
+
+  function toggleModal() {
+      modal.classList.remove("show-modal");
+  }
+
+  closeButton.addEventListener("click", toggleModal);
+  document.querySelector("span#moves").innerHTML = moves;
+  document.querySelector("span#time").innerHTML = timer.innerHTML;
+  document.querySelector("span#start").innerHTML = "Ainda não sei";
 }
 
 // Reset the Game
@@ -139,9 +164,14 @@ const btn_restart = document.querySelector('.restart');
 btn_restart.addEventListener('click', restartGame);
 
 function restartGame(){
-  const matchClass = document.querySelectorAll(".match");
-  Array.from(matchClass).forEach(function(card){
+  modal.classList.remove("show-modal");
+  clearInterval(countTime);
+  timer.innerHTML = "00:00";
+  const cardClass = document.querySelectorAll(".card");
+  Array.from(cardClass).forEach(function(card){
     card.classList.remove("match");
+    card.classList.remove("show");
+    card.classList.remove("open");
   });
   const numberMoves = document.querySelector(".moves");
   numberMoves.textContent = 0;
