@@ -71,17 +71,7 @@ function isMatch(){
       });
       numberMatches = numberMatches + 1;
     }else{ // cards do not match
-
-      const noMatchCard1 = document.getElementsByClassName(openCards[0]);
-      Array.from(noMatchCard1).forEach(function(card){
-        card.parentElement.classList.remove("show");
-        card.parentElement.classList.remove("open");
-      });
-      const noMatchCard2 = document.getElementsByClassName(openCards[1]);
-      Array.from(noMatchCard2).forEach(function(card){
-        card.parentElement.classList.remove("show");
-        card.parentElement.classList.remove("open");
-      });
+      setTimeout(noMatch, 1000, openCards[0], openCards[1]);
     }
 
     // increment the move counter and display it on the page
@@ -90,6 +80,19 @@ function isMatch(){
     numberMoves.textContent = counter;
     openCards = [];
   }
+}
+
+function noMatch(openCard1, openCard2){
+  const noMatchCard1 = document.getElementsByClassName(openCard1);
+  Array.from(noMatchCard1).forEach(function(card){
+    card.parentElement.classList.remove("show");
+    card.parentElement.classList.remove("open");
+  });
+  const noMatchCard2 = document.getElementsByClassName(openCard2);
+  Array.from(noMatchCard2).forEach(function(card){
+    card.parentElement.classList.remove("show");
+    card.parentElement.classList.remove("open");
+  });
 }
 
 function cardSelection(evt){
