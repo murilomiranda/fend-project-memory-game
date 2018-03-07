@@ -42,6 +42,7 @@ function startGame() {
   totalSeconds = 0;
   numberMatches = 0;
   openCards = [];
+  numberStars = 3;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -58,6 +59,10 @@ function shuffle(array) {
 
     return array;
 }
+
+// Number of stars
+let numberStars = 3;
+const starClass = document.querySelector(".stars");
 
 // Timer
 let totalSeconds = 0;
@@ -99,12 +104,16 @@ function isMatch() {
 
     // increment the move counter and display it on the page
     moves = moves + 1;
+
     if(moves == 1) {
       totalSeconds = 0;
       timeRun();
     }
     const numberMoves = document.querySelector(".moves");
     numberMoves.textContent = moves;
+
+    //calculate the number of stars
+    countStars();
 
     //clean the openCards array
     openCards = [];
@@ -129,51 +138,93 @@ function noMatch(openCard1, openCard2){
   });
 }
 
-function cardSelection(evt){
+function countStars() {
+  if(moves > 12 && moves <= 18) {
+    if(numberStars === 3) {
+      numberStars = 2;
+      starClass.removeChild(starClass.firstElementChild);
+    }
+  } else if(moves > 18 && moves <= 26) {
+    if(numberStars === 2){
+      numberStars = 1;
+      starClass.removeChild(starClass.firstElementChild);
+    }
+  } else if(moves > 26) {
+    if(numberStars === 1) {
+      numberStars = 0;
+      starClass.removeChild(starClass.firstElementChild);
+    }
+  }
+}
+
+function cardSelection(evt) {
   let target = evt.target;
   // Add classes "show" and "open" to a selected card
-  if(target.nodeName === "LI" & !target.classList.contains("show")){
-    target.classList.add("show");
-    target.classList.add("open");
-    openCards.push(target.firstElementChild.classList[1]);
-  }else if(target.nodeName === "I" & !target.parentElement.classList.contains("show")){
-    target.parentElement.classList.add("show");
-    target.parentElement.classList.add("open");
-    openCards.push(target.classList[1]);
+  if(target.nodeName === "LI") {
+    if(!target.classList.contains("show")) {
+      target.classList.add("show");
+      target.classList.add("open");
+      openCards.push(target.firstElementChild.classList[1]);
+    }
+  } else if(target.nodeName === "I") {
+    if(!target.parentElement.classList.contains("show")) {
+      target.parentElement.classList.add("show");
+      target.parentElement.classList.add("open");
+      openCards.push(target.classList[1]);
+    }
   }
+  // console.log(evt);
   isMatch();
 }
 
 // End the game
-function endGame(){
+function endGame() {
   clearInterval(countTime);
   modal.classList.add("show-modal");
 
   function toggleModal() {
       modal.classList.remove("show-modal");
   }
-
+  finalTime = timer.innerHTML.split(":");
+  minute = parseInt(finalTime[0]) > 1 ? parseInt(finalTime[0]) + " minutes" : parseInt(finalTime[0]) + " minute";
+  second = parseInt(finalTime[1]) > 1 ? parseInt(finalTime[1]) + " seconds" : parseInt(finalTime[1]) + "second";
+  finalTime = parseInt(finalTime[0]) > 0 ? minute + " and " + second : second;
   closeButton.addEventListener("click", toggleModal);
-  document.querySelector("span#moves").innerHTML = moves;
-  document.querySelector("span#time").innerHTML = timer.innerHTML;
-  document.querySelector("span#start").innerHTML = "Ainda não sei";
+  document.querySelector("span#moves").innerHTML = moves > 1 ? moves + " moves" : moves + " move";
+  document.querySelector("span#time").innerHTML = finalTime;
+  document.querySelector("span#star").innerHTML = numberStars > 1 ? numberStars + " stars": numberStars + " star";
 }
 
 // Reset the Game
 const btn_restart = document.querySelector('.restart');
 btn_restart.addEventListener('click', restartGame);
 
-function restartGame(){
+function restartGame() {
   modal.classList.remove("show-modal");
+
+  // reset up the timer
   clearInterval(countTime);
   timer.innerHTML = "00:00";
+
+  // reset up the cards
   const cardClass = document.querySelectorAll(".card");
-  Array.from(cardClass).forEach(function(card){
+  Array.from(cardClass).forEach(function(card) {
     card.classList.remove("match");
     card.classList.remove("show");
     card.classList.remove("open");
   });
+
+  // reset up the number of moves
   const numberMoves = document.querySelector(".moves");
   numberMoves.textContent = 0;
+
+  //reset up the number of stars
+  for(let i = numberStars; i < 3; i++) {
+    const oneStar = document.createElement("li");
+    oneStar.innerHTML = '<i class="fa fa-star"></i>';
+
+    starClass.appendChild(oneStar);
+  }
+  //restart Game
   startGame();
 }
