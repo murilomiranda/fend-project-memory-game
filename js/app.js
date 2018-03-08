@@ -3,7 +3,11 @@
 let openCards = [];
 
 // number of matches
-let numberMatches = 0
+let numberMatches = 0;
+
+// number of games
+let numberGames = 0;
+let infoGames = [];
 
 // add event listener at "deck" class
 const deck = document.querySelector(".deck");
@@ -27,13 +31,13 @@ function startGame() {
   const newCards = shuffle(Array.from(cards));
 
   // remove cards from deck
-  cards.forEach(function(card){
+  cards.forEach(function(card) {
     card.parentElement.removeChild(card);
   });
 
   // loop through each card and create its HTML
   // add each card's HTML to the page
-  newCards.forEach(function(card){
+  newCards.forEach(function(card) {
     deck.innerHTML = deck.innerHTML + card.outerHTML;
   });
 
@@ -70,7 +74,7 @@ const timer = document.querySelector(".timer");
 let countTime;
 
 function timeRun(){
-  countTime = setInterval(function(){
+  countTime = setInterval(function() {
     ++totalSeconds;
     timer.innerHTML = pad(parseInt(totalSeconds/60)) + ":" + pad(totalSeconds%60);
   }, 1000);
@@ -87,9 +91,9 @@ function timeRun(){
 
 function isMatch() {
   // check if there are two cards
-  if(openCards.length === 2){
+  if(openCards.length === 2) {
     // if the cards match
-    if(openCards[0] === openCards[1]){
+    if(openCards[0] === openCards[1]) {
       //lock the cards in the open position
       const matchCards = document.getElementsByClassName(openCards[0]);
       Array.from(matchCards).forEach(function(card){
@@ -98,14 +102,15 @@ function isMatch() {
         card.parentElement.classList.add("match");
       });
       numberMatches = numberMatches + 1;
-    }else{ // cards do not match
-      setTimeout(noMatch, 900, openCards[0], openCards[1]);
+    }else { // cards do not match
+      addNomatchClass()
+      setTimeout(noMatch, 800, openCards[0], openCards[1]);
     }
 
     // increment the move counter and display it on the page
     moves = moves + 1;
 
-    if(moves == 1) {
+    if(moves === 1) {
       totalSeconds = 0;
       timeRun();
     }
@@ -119,22 +124,26 @@ function isMatch() {
     openCards = [];
 
     // Check if all cards are matched
-    if(numberMatches === 8){
-      return endGame();
+    if(numberMatches === 8) {
+      setTimeout(endGame, 1000);
     }
   }
 }
 
-function noMatch(openCard1, openCard2){
-  const noMatchCard1 = document.getElementsByClassName(openCard1);
-  Array.from(noMatchCard1).forEach(function(card){
-    card.parentElement.classList.remove("show");
-    card.parentElement.classList.remove("open");
+// add nomatch class when two cards do not match
+function addNomatchClass() {
+  const noMatchCard = document.querySelectorAll(".show");
+  Array.from(noMatchCard).forEach(function(card) {
+    card.classList.add("nomatch");
   });
-  const noMatchCard2 = document.getElementsByClassName(openCard2);
-  Array.from(noMatchCard2).forEach(function(card){
-    card.parentElement.classList.remove("show");
-    card.parentElement.classList.remove("open");
+}
+
+function noMatch() {
+  const noMatchCard = document.querySelectorAll(".show");
+  Array.from(noMatchCard).forEach(function(card) {
+    card.classList.remove("show");
+    card.classList.remove("open");
+    card.classList.remove("nomatch");
   });
 }
 
@@ -145,7 +154,7 @@ function countStars() {
       starClass.removeChild(starClass.firstElementChild);
     }
   } else if(moves > 18 && moves <= 26) {
-    if(numberStars === 2){
+    if(numberStars === 2) {
       numberStars = 1;
       starClass.removeChild(starClass.firstElementChild);
     }
@@ -185,6 +194,8 @@ function endGame() {
   function toggleModal() {
       modal.classList.remove("show-modal");
   }
+
+  infoGames = [numberGames, moves, timer.innerHTML, numberStars];
   finalTime = timer.innerHTML.split(":");
   minute = parseInt(finalTime[0]) > 1 ? parseInt(finalTime[0]) + " minutes" : parseInt(finalTime[0]) + " minute";
   second = parseInt(finalTime[1]) > 1 ? parseInt(finalTime[1]) + " seconds" : parseInt(finalTime[1]) + "second";
@@ -195,11 +206,47 @@ function endGame() {
   document.querySelector("span#star").innerHTML = numberStars > 1 ? numberStars + " stars": numberStars + " star";
 }
 
-// Reset the Game
+// Play the Game again
+const btn_play = document.querySelector('.play-again');
+btn_play.addEventListener('click', playAgain);
+
+function playAgain() {
+  numberGames = numberGames + 1;
+  resetGame();
+
+  if(numberGames === 1) {
+    // create the head of table
+    const getTable = document.querySelector(".table");
+    getTable.firstElementChild.remove();
+    getTable.innerHTML = "<table class='score-table'><thead><tr><th>Try</th><th>Moves</th><th>Time</th><th>Stars</th></tr></thead><tbody></tbody></table>";
+  }
+
+  const bodyTable = document.querySelector("tbody");
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = "<td>"+ infoGames[0] +"</td><td>"+ infoGames[1] +"</td><td>"+ infoGames[2] +"</td><td>"+ infoGames[3] +"</td>";
+  bodyTable.appendChild(newRow);
+
+  //restart Game
+  startGame();
+}
+
+// Restart the Game
 const btn_restart = document.querySelector('.restart');
 btn_restart.addEventListener('click', restartGame);
 
 function restartGame() {
+  numberGames = 0;
+  const getTable = document.querySelector(".table");
+  getTable.firstElementChild.remove();
+  getTable.innerHTML = "<span>You could compare your scores if you play more.</span>";
+
+  resetGame();
+  //restart Game
+  startGame();
+}
+
+// Reset the Game
+function resetGame(){
   modal.classList.remove("show-modal");
 
   // reset up the timer
@@ -225,6 +272,4 @@ function restartGame() {
 
     starClass.appendChild(oneStar);
   }
-  //restart Game
-  startGame();
 }

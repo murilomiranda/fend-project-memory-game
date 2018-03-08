@@ -17,7 +17,7 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #fff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -31,6 +31,7 @@ body {
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
+    margin-top: 1.5em;
 }
 
 /*
@@ -52,33 +53,101 @@ h1 {
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
-    font-size: 0;
-    color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+  height: 125px;
+  width: 125px;
+  background: #2e3d49;
+  font-size: 0;
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
-    cursor: default;
+  transform: rotateY(0);
+  background: #02b3e4;
+  cursor: default;
+  animation-name: rubberBand;
+  animation-duration: 0.5s;
 }
 
 .deck .card.show {
-    font-size: 33px;
+  font-size: 33px;
 }
 
 .deck .card.match {
-    cursor: default;
-    background: #02ccba;
-    font-size: 33px;
+  cursor: default;
+  background: #02ccba;
+  font-size: 33px;
+  animation-name: pulse;
+  animation-duration: 1s;
+}
+
+.deck .card.nomatch {
+  background: #f44336;
+  animation-name: shake;
+  animation-duration: 1s;
+}
+
+@keyframes rubberBand {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
 }
 
 /*
@@ -114,6 +183,7 @@ h1 {
 
 /* Modal box */
 .modal {
+  font-family: 'Open Sans', sans-serif;
   position: fixed;
   left: 0;
   top: 0;
@@ -131,24 +201,78 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: #fff;
   padding: 1rem 1.5rem;
   width: 24rem;
   border-radius: 0.5rem;
+  text-align: center;
 }
 
 .close-button {
   float: right;
   width: 1.5rem;
   line-height: 1.5rem;
-  text-align: center;
   cursor: pointer;
   border-radius: 0.25rem;
-  background-color: lightgray;
 }
 
 .close-button:hover {
-  background-color: darkgray;
+  background-color: #a9a9a9;
+}
+
+.modal-header {
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.modal-body p {
+  line-height: 2em;
+}
+
+.table {
+  margin-bottom: 1.5em;
+}
+
+.table span {
+  font-size: 0.8em;
+  font-style: italic;
+  margin-bottom: 1.5em;
+}
+
+.score-table {
+  width: 70%;
+  margin-left: 15%;
+  border-collapse: collapse;
+}
+
+.score-table td, .score-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.score-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.score-table tr:hover {
+  background-color: #ddd;
+}
+
+.score-table th {
+  padding: 10px;
+  text-align: center;
+  background-color: #008cba;
+  color: #fff;
+}
+
+.modal-footer button {
+  background-color: #008cba;
+  border: none;
+  color: #fff;
+  padding: 15px 32px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 0.25rem;
 }
 
 .show-modal {
