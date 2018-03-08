@@ -22,13 +22,14 @@ When all cards are matched, then a modal box pops up congratulating and shows ho
 
 #### Counting STARS
 Each game starts with three stars. According to the number of moves, the number of stars decreases:
-3. between 8 and 12 moves;
-2. between 13 and 18 moves;
-1. between 19 and 26 moves; and
-0. above 26 moves
+
+- 3 stars: between 8 and 12 moves;
+- 2 stars: between 13 and 18 moves;
+- 1 star: between 19 and 26 moves; and
+- 0 star: above 26 moves
 
 #### Comparing scores
-Playing two games or more, a table with older scores will appear in "congratulations" modal box.
+Playing two games or more, a table with older scores will appear in "congratulations" modal box. For example:
 
 | Try | Moves | Time | Stars |
 |:---:| :---: |:---: | :---: |
@@ -38,5 +39,5 @@ Playing two games or more, a table with older scores will appear in "congratulat
 If reset button is clicked, this table will be deleted.
 
 #### "Congratulations!" Modal Box
-Clicking on "Play again?" will start a new game and save the information from the previous one.
-Clicking on "x - close button" will close the modal box, but it won't start a new game or save the previous information. If one wants to play again, it is necessary to click on reset button.
+- Clicking on "Play again?" will start a new game and save the information from the previous one.
+- Clicking on "x - close button" will close the modal box, but it won't start a new game or save the previous information. If one wants to play again, it is necessary to click on reset button.
