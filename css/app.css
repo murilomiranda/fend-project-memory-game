@@ -21,6 +21,9 @@ body {
     font-family: 'Coda', cursive;
 }
 
+img {
+  max-width: 80px;
+}
 .container {
     display: flex;
     justify-content: center;
