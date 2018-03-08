@@ -147,6 +147,7 @@ function noMatch() {
   });
 }
 
+// count the number of STARS
 function countStars() {
   if(moves > 12 && moves <= 18) {
     if(numberStars === 3) {
