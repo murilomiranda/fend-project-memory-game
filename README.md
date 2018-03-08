@@ -22,11 +22,27 @@ When all cards are matched, then a modal box pops up congratulating and shows ho
 
 #### Counting STARS
 Each game starts with three stars. According to the number of moves, the number of stars decreases:
+<<<<<<< HEAD
 
 - 3 stars: between 8 and 12 moves;
 - 2 stars: between 13 and 18 moves;
 - 1 star: between 19 and 26 moves; and
 - 0 star: above 26 moves
+||||||| merged common ancestors
+3. between 8 and 12 moves;
+2. between 13 and 18 moves;
+1. between 19 and 26 moves; and
+0. above 26 moves
+=======
+
+3 stars: between 8 and 12 moves;
+
+2 stars: between 13 and 18 moves;
+
+1 star: between 19 and 26 moves; and
+
+0 star: above 26 moves
+>>>>>>> 84372393623ebb48b15abae2f8fa93ee3b85bc51
 
 #### Comparing scores
 Playing two games or more, a table with older scores will appear in "congratulations" modal box. For example:
