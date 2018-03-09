@@ -171,13 +171,13 @@ function cardSelection(evt) {
     let target = evt.target;
     // Add classes "show" and "open" to a selected card
     if(target.nodeName === "LI") {
-      if(!target.classList.contains("show")) {
+      if(!target.classList.contains("show") && !target.classList.contains("match")) {
         target.classList.add("show");
         target.classList.add("open");
         openCards.push(target.firstElementChild.classList[1]);
       }
     } else if(target.nodeName === "I") {
-      if(!target.parentElement.classList.contains("show")) {
+      if(!target.parentElement.classList.contains("show") && !target.parentElement.classList.contains("match")) {
         target.parentElement.classList.add("show");
         target.parentElement.classList.add("open");
         openCards.push(target.classList[1]);
