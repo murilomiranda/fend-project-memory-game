@@ -103,7 +103,7 @@ function isMatch() {
       });
       numberMatches = numberMatches + 1;
     }else { // cards do not match
-      addNomatchClass()
+      addNomatchClass();
       setTimeout(noMatch, 800, openCards[0], openCards[1]);
     }
 
@@ -125,7 +125,7 @@ function isMatch() {
 
     // Check if all cards are matched
     if(numberMatches === 8) {
-      setTimeout(endGame, 1000);
+      setTimeout(endGame, 1100);
     }
   }
 }
@@ -157,11 +157,6 @@ function countStars() {
   } else if(moves > 18 && moves <= 26) {
     if(numberStars === 2) {
       numberStars = 1;
-      starClass.removeChild(starClass.firstElementChild);
-    }
-  } else if(moves > 26) {
-    if(numberStars === 1) {
-      numberStars = 0;
       starClass.removeChild(starClass.firstElementChild);
     }
   }

@@ -220,11 +220,11 @@ h1 {
   background-color: #a9a9a9;
 }
 
-.modal-header {
+.modal__header {
   border-bottom: 1px solid #d3d3d3;
 }
 
-.modal-body p {
+.modal__body p {
   line-height: 2em;
 }
 
@@ -264,7 +264,7 @@ h1 {
   color: #fff;
 }
 
-.modal-footer button {
+.modal__footer button {
   background-color: #008cba;
   border: none;
   color: #fff;
