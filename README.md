@@ -24,9 +24,8 @@ When all cards are matched, then a modal box pops up congratulating and shows ho
 Each game starts with three stars. According to the number of moves, the number of stars decreases:
 
 - 3 stars: between 8 and 12 moves;
-- 2 stars: between 13 and 18 moves;
-- 1 star: between 19 and 26 moves; and
-- 0 star: above 26 moves
+- 2 stars: between 13 and 18 moves; and
+- 1 star: above 19 moves; 
 
 #### Comparing scores
 Playing two games or more, a table with older scores will appear in "congratulations" modal box. For example:
