@@ -102,9 +102,13 @@ function isMatch() {
         card.parentElement.classList.add("match");
       });
       numberMatches = numberMatches + 1;
+
+      //clean the openCards array
+      openCards = [];
+
     }else { // cards do not match
       addNomatchClass();
-      setTimeout(noMatch, 800, openCards[0], openCards[1]);
+      setTimeout(noMatch, 800);
     }
 
     // increment the move counter and display it on the page
@@ -119,9 +123,6 @@ function isMatch() {
 
     //calculate the number of stars
     countStars();
-
-    //clean the openCards array
-    openCards = [];
 
     // Check if all cards are matched
     if(numberMatches === 8) {
@@ -145,6 +146,9 @@ function noMatch() {
     card.classList.remove("open");
     card.classList.remove("nomatch");
   });
+
+  //clean the openCards array
+  openCards = [];
 }
 
 // count the number of STARS
@@ -163,23 +167,25 @@ function countStars() {
 }
 
 function cardSelection(evt) {
-  let target = evt.target;
-  // Add classes "show" and "open" to a selected card
-  if(target.nodeName === "LI") {
-    if(!target.classList.contains("show")) {
-      target.classList.add("show");
-      target.classList.add("open");
-      openCards.push(target.firstElementChild.classList[1]);
+  if(openCards.length < 2){
+    let target = evt.target;
+    // Add classes "show" and "open" to a selected card
+    if(target.nodeName === "LI") {
+      if(!target.classList.contains("show")) {
+        target.classList.add("show");
+        target.classList.add("open");
+        openCards.push(target.firstElementChild.classList[1]);
+      }
+    } else if(target.nodeName === "I") {
+      if(!target.parentElement.classList.contains("show")) {
+        target.parentElement.classList.add("show");
+        target.parentElement.classList.add("open");
+        openCards.push(target.classList[1]);
+      }
     }
-  } else if(target.nodeName === "I") {
-    if(!target.parentElement.classList.contains("show")) {
-      target.parentElement.classList.add("show");
-      target.parentElement.classList.add("open");
-      openCards.push(target.classList[1]);
-    }
+    // console.log(evt);
+    isMatch();
   }
-  // console.log(evt);
-  isMatch();
 }
 
 // End the game
